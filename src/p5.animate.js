@@ -8,6 +8,8 @@
 
 (function(p5) {
 
+  'use strict';
+
   // Object to store all animations by name
   var _animations = {};
 
