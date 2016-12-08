@@ -8,3 +8,7 @@ before_install:
     - sh -e /etc/init.d/xvfb start
 before_script:
     - npm install
+
+addons:
+    code_climate:
+        repo_token: e3ea65e18129457ab3f443a120ce70c4b155db223e3b4b87de5c55dadaab9391
