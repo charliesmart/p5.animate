@@ -103,7 +103,7 @@
 
     // Create the animation object
     var animationObject = {
-      type:          type || NUMBER,
+      type:          type || 'number',
       currentValue:  val,
       targetValue:   val,
       previousValue: val,
@@ -138,22 +138,25 @@
       a.targetValue   = val;
       a.previousValue = a.currentValue;
       a.active = true;
-      a = setstartTiming(a);
+      a = _setStartTiming(a);
     }
 
     if (a.active) {
       // If waiting for another animation to finish, run this animation with a
       // easing value of 0, which means the animation has not started.
       if (!!a.waitFor && animations[a.waitFor].active) {
-        a = _setstartTiming(a);
-        return a.type(0);
+        a = _setStartTiming(a);
+        a.currentValue = animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, 0);
+        return a.currentValue;
       }
 
       var easing = _timing(a);
-      return a.type(easing);
+      a.currentValue = animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, easing);
+      return a.currentValue;
 
     } else {
-      return a.type(0);
+      a.currentValue = animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, 0);
+      return a.currentValue;
     }
   }
 
@@ -165,7 +168,7 @@
    * @return {Object}  The animation object
    * @private
    */
-  function _setstartTiming(a) {
+  function _setStartTiming(a) {
     if (timing === SECONDS) {
       a.startTiming = new Date();
     } else {
@@ -223,6 +226,16 @@
 
     // Pass the adjusted time to the current easing function and return result
     return a.easing(adjustedTimeDif);
+  }
+
+  //------------------------------------------------
+  // Animation types
+  //------------------------------------------------
+
+  var _animationTypes = {}
+
+  _animationTypes.number = function(c, t, p, e) {
+    return p + (t - p) * e;
   }
 
   //------------------------------------------------
