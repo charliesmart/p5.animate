@@ -1,4 +1,4 @@
-describe('animationTiming([type])', {
+describe('animationTiming([type])', function() {
   it('returns "SECONDS" when called first without an argument.', function() {
     expect(
       animationTiming();
