@@ -48,7 +48,7 @@
    * @return {String}  If no argument is passed, it returns the name of the current
    * timing function.
    */
-  p5.prototype.animationTiming(timing) {
+  p5.prototype.animationTiming = function(timing) {
     if (arguments.length < 1) return _timing.name;
 
     if (timing === FRAMES || timing === SECONDS) {
@@ -106,7 +106,7 @@
       waitFor:       config.waitFor      || null,
       startTiming:     null,
       active:        false,
-    }
+    };
 
     // Add it to _animations
     _animations[name] = animationObject;
