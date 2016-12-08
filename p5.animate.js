@@ -30,7 +30,7 @@
    * @param  {Object} c      Optional configuration object.
    * @return {Number}        Current animation value.
    */
-  p5.prototype.animate = function(name, val,type, config) {
+  p5.prototype.animate = function(name, val, type, config) {
     if(!(_animationExists(name)) {
       _newAnimation(name, val, type, config);
     }

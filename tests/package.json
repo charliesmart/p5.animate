@@ -1,0 +1,12 @@
+{
+  "name": "p5-animate",
+  "description": "Tests for p5.animate.js",
+  "author": "Charlie Smart",
+  "version": "0.0.1",
+  "devDependencies": {
+    "jshint": "^2.6.0"
+  },
+  "scripts": {
+    "test": "./node_modules/jshint/bin/jshint ./p5.animate.js"
+  }
+}
