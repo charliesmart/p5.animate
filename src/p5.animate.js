@@ -60,6 +60,14 @@
     }
   };
 
+  /**
+   * Return the object containing all current animation objects
+   * @return {Object} Object containing animation objects
+   */
+  p5.prototype.getAnimations = function() {
+    return _animations;
+  }
+
   // Animation type lazy function should go here
 
   //------------------------------------------------
@@ -216,5 +224,23 @@
     // Pass the adjusted time to the current easing function and return result
     return a.easing(adjustedTimeDif);
   }
+
+  //------------------------------------------------
+  // Easing functions
+  //------------------------------------------------
+
+  function LINEAR(t)       { return t }
+  function IN_QUAD(t)      { return t * t }
+  function OUT_QUAD(t)     {return t * (2 - t)}
+  function IN_OUT_QUAD(t)  { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t}
+  function IN_CUBIC(t)     { return t * t * t }
+  function OUT_CUBIC(t)    { return (--t) * t * t + 1 }
+  function IN_OUT_CUBIC(t) { return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1 }
+  function IN_QUART(t)     { return t * t * t * t }
+  function OUT_QUART(t)    { return 1 - (--t) * t * t }
+  function IN_OUT_QUART(t) { return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t }
+  function IN_QUINT(t)     { return t * t * t * t * t }
+  function OUT_QUINT(t)    { return 1 + (--t) * t * t * t * t }
+  function IN_OUT_QUINT(t) { return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t }
 
 })(p5);
