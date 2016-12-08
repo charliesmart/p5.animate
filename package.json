@@ -1,9 +1,11 @@
 {
-  "name": "p5-animate",
+  "name": "p5.animate",
   "description": "Tests for p5.animate.js",
   "author": "Charlie Smart",
   "version": "0.0.1",
   "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-uglify": "^2.0.0",
     "jshint": "^2.6.0",
     "karma": "^1.3.0"
   },
