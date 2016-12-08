@@ -36,7 +36,7 @@
     }
 
     return _runAnimation(name, val);
-  }
+  };
 
   /**
    * Setter and getting for the _timing variable. Allows the user to set whether
@@ -56,7 +56,7 @@
     } else {
       console.error(timing.name + ' is not a valid timing type.');
     }
-  }
+  };
 
   // Animation type lazy function should go here
 
