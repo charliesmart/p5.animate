@@ -1,0 +1,3 @@
+exclude_paths:
+- "p5"
+- "Gruntfile.js"
