@@ -3,8 +3,9 @@
 # p5.animate
 
 This lightweight library makes it easy to get started with animations in p5.js.
-It handles otherwise annoying things like timing, easing, delays, ordering, and more. All
-in simple syntax similar to basic p5.js.
+It handles otherwise annoying things like timing, easing, delays, ordering, and more. All in simple syntax similar to basic p5.js.
+
+![Animation Demo]('assets/animate.gif')
 
 [Download minified](https://raw.githubusercontent.com/charliesmart/p5.animate/master/src/p5.animate.min.js)
 
