@@ -6,6 +6,14 @@
  * web:     charliesmart.info
  */
 
+var NUMBER,
+    TRANSLATE_X,
+    TRANSLATE_Y,
+    ROTATE,
+    COLOR,
+    FILL,
+    STROKE;
+
 (function(p5) {
 
   'use strict';
@@ -124,7 +132,7 @@
 
     // Create the animation object
     var animationObject = {
-      type:          type || 'number',
+      type:          type || NUMBER,
       currentValue:  val,
       targetValue:   val,
       previousValue: val,
@@ -168,20 +176,22 @@
       // easing value of 0, which means the animation has not started.
       if (!!a.waitFor && animations[a.waitFor].active) {
         a = _setStartTiming(a);
-        a.currentValue = _animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, 0);
+        a.currentValue = a.type(0);
         return a.currentValue;
       }
 
+      // Set easing based on current timing type (i.e. FRAMES or SECONDS)
       var easing = _timing(a);
 
-      a.currentValue = _animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, easing);
-      if (easing >= 1) {
-        a.active = false;
-      }
-      return a.currentValue;
+      // Get the current value based on callback
+      a.currentValue = a.type(easing);
 
-    } else {
+      // Deactivate if we're done easing
+      a.active = easing < 1;
+
       return a.currentValue;
+    } else {
+      return a.type(1);
     }
   }
 
@@ -266,10 +276,103 @@
   // Animation types
   //------------------------------------------------
 
-  var _animationTypes = {}
+  /**
+   * Calculates tweened number and returns current value in tween
+   *
+   * @param {Number} e Current easing value
+   * @return {Number}  Current value
+   */
+  NUMBER = function(e) {
+    return this.previousValue + (this.targetValue - this.previousValue) * e;
+  }
 
-  _animationTypes.number = function(c, t, p, e) {
-    return p + (t - p) * e;
+  /**
+   * Calculates tweened value and applies it as x translate
+   *
+   * @param {Number} e Current easing value
+   * @return {Number}  Current value
+   */
+  TRANSLATE_X = function(e) {
+    var val = this.previousValue + (this.targetValue - this.previousValue) * e;
+    translate(val, 0);
+    return val;
+  }
+
+  /**
+   * Calculates tweened value and applies it as y translate
+   *
+   * @param {Number} e Current easing value
+   * @return {Number}  Current value
+   */
+  TRANSLATE_Y = function(e) {
+    var val = this.previousValue + (this.targetValue - this.previousValue) * e;
+    translate(0, val);
+    return val;
+  }
+
+  /**
+   * Calculates tweened value and applies it as rotate, centered around the
+   * specified origin points. If no point is specified, the default [0, 0] is used
+   *
+   * @param {Number} e Current easing value
+   * @return {Number}  Current value
+   */
+  ROTATE = function(e) {
+    var val = this.previousValue + (this.targetValue - this.previousValue) * e;
+    translate(this.origin[0], this.origin[1]);
+    rotate(val);
+    translate(-(this.origin[0]), -(this.origin[1]));
+    return val;
+  }
+
+  /**
+   * Calculates tweened value and applies it as scale, centered around the
+   * specified origin points. If no point is specified, the default [0, 0] is used
+   *
+   * @param {Number} e Current easing value
+   * @return {Number}  Current value
+   */
+  SCALE = function(e) {
+    var val = this.previousValue + (this.targetValue - this.previousValue) * e;
+    translate(this.origin[0], this.origin[1]);
+    scale(val);
+    translate(-(this.origin[0]), -(this.origin[1]));
+    return val;
+  }
+
+  /**
+   * Calculates color using lerpColor and returns it
+   *
+   * @param {Object} e p5 color object
+   * @return {Object}  p5 color object
+   */
+  COLOR = function(e) {
+    var val = lerpColor(this.previousValue, this.targetValue, e);
+    return val;
+  }
+
+  /**
+   * Calculates color using lerpColor and applies it as fill before returning it
+   *
+   * @param {Object} e p5 color object
+   * @return {Object}  p5 color object
+   */
+  FILL = function(e) {
+    var val = lerpColor(this.previousValue, this.targetValue, e);
+    fill(val);
+    return val;
+  }
+
+  /**
+   * Calculates color using lerpColor and applies it as stroke before returning it
+   *
+   * @param {Object} e p5 color object
+   * @return {Object}  p5 color object
+   */
+  STROKE = function(e) {
+    var val = lerpColor(this.previousValue, this.targetValue, e);
+    stroke(val);
+    return val;
   }
 
   //------------------------------------------------
