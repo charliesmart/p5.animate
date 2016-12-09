@@ -37,7 +37,8 @@
       _newAnimation(name, val, type, config);
     }
 
-    return _runAnimation(name, val);
+    var val = _runAnimation(name, val);
+    return val;
   };
 
   /**
@@ -78,7 +79,7 @@
   p5.prototype.loopControler = function() {
     looping = false;
 
-    for (var = i 0; i < _animations.length; i++) {
+    for (var i = 0; i < _animations.length; i++) {
       if (_animations[i].active === true) {
         looping = true;
       }
@@ -130,7 +131,7 @@
       origin:        config.origin       || [0, 0], //These are default values
       shapeMode:     config.shapeMode    || LINES,
       endShapeMode:  config.endShapeMode || CLOSE,
-      easing:        config.easing       || QUAD_OUT,
+      easing:        config.easing       || OUT_QUAD,
       duration:      config.duration     || 400,
       delay:         config.delay        || 0,
       waitFor:       config.waitFor      || null,
@@ -157,6 +158,7 @@
     if (val !== a.targetValue) {
       a.targetValue   = val;
       a.previousValue = a.currentValue;
+
       a.active = true;
       a = _setStartTiming(a);
     }
@@ -166,16 +168,19 @@
       // easing value of 0, which means the animation has not started.
       if (!!a.waitFor && animations[a.waitFor].active) {
         a = _setStartTiming(a);
-        a.currentValue = animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, 0);
+        a.currentValue = _animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, 0);
         return a.currentValue;
       }
 
       var easing = _timing(a);
-      a.currentValue = animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, easing);
+
+      a.currentValue = _animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, easing);
+      if (easing >= 1) {
+        a.active = false;
+      }
       return a.currentValue;
 
     } else {
-      a.currentValue = animationTypes[a.type](a.currentValue, a.targetValue, a.previousValue, 0);
       return a.currentValue;
     }
   }
@@ -189,7 +194,7 @@
    * @private
    */
   function _setStartTiming(a) {
-    if (timing === SECONDS) {
+    if (_timing === SECONDS) {
       a.startTiming = new Date();
     } else {
       a.startTiming = 0;
@@ -207,6 +212,7 @@
    * @private
    */
   function SECONDS(a) {
+
     // Check how much time has elapsed
     var currentTime = new Date(),
         timeDif     = currentTime - a.startTiming;
@@ -214,6 +220,10 @@
     // If there is a delay, return 0 until that much time elapses
     if (timeDif < a.delay) {
       return 0;
+    }
+
+    if (timeDif - a.delay >= a.duration) {
+      return 1;
     }
 
     // Normalize the time difference to range (0, 1)
@@ -237,8 +247,12 @@
    */
   function FRAMES(a) {
     // If there is a delay, return 0 until that many frame elapse
-    if (a.startTiming < delay) {
+    if (a.startTiming < a.delay) {
       return 0;
+    }
+
+    if (timeDif - delay >= a.duration) {
+      return 1;
     }
 
     // Normalize the time elapsed frames to range (0, 1)
