@@ -20,32 +20,72 @@ Download either the minified or un-minified version of p5.animate and add it to 
 
 ## Using p5.animate
 
-The `animate` function requires two arguments: a string representing a unique name for the animation, and a variable containing its initial value. At this point, `animate` will just return the value of its second argument.
+Here is a basic overview of how to use p5.animate. Scroll down for full API documentation.
 
-When the value of `animate`'s second argument changes, it will begin returning values transitioning between the previous value of the argument and the new value. Here's a simple example:
+### Basic animation
+
+The `animate` function is used to tween between two numbers. It requires two arguments: a string representing a unique name for the animation, and a variable containing its initial value. Its basic purpose is to tween between to values.
 
 ```javascript
-var val = 0;
+var num = 100;
+var currentValue = animate('myAnimation', num);
+```
+
+In this example, if the value of `num` never changes, `animate` will always return `100` (the initial value of num). However, if the value of `num` is changed to `200`, then every time `animate` is called over the next 500ms, it will return a number between `100` and `200` proportional to the time elapsed.
+
+Here's an example of how that might work:
+
+```javascript
+var num = 0;
 
 function draw() {
 
   background(255);
 
   // We assign the result of animation() to a new variable...
-  var animationVal = animation('myAnimation', val);
+  var position = animate('myAnimation', num);
 
   // ...and use that variable for the x and y coordinates of a rect
-  rect(animationVal, animationVal, 50, 50);
+  rect(position, position, 50, 50);
 }
 
 function mouseClicked() {
-  // On click, the value of val is set to 100. The animation will begin tweening, and
-  // animationVal will smoothly increment between 0 and 100 every time the draw loop
-  // runs. The default time for this is 500 milliseonds.
+  // Until the mouse is clicked, animation() will alays return 0. However, here we
+  // set the value of num to 100 when the mouse is clicked. Once that change is
+  // made, animation() will begin returning number between 0 and 100 over the next
+  // 500ms. The timing and easing can both be changed. More on that later.
   val = 100;
 }
 ```
 
+### Built in callbacks
+
+`animate` can take a third argument: a callback function that handles thins like rotation, translation, scaling, and colors for you. The default callback is `NUMBER`, which just returns the current tween value. Here's an example of using the `SCALE` callback to transition scale.
+
+```javascript
+var scaleVal = 1;
+
+function draw() {
+
+  background(255);
+
+  // Here, we pass a third 'SCALE' argument. This represents a callback function
+  // that does the following:
+  // scale(currentTweenValue);
+
+  // Since this handles the p5 transformation for us, we don't need to assign the
+  // return value to a variable.
+  animate('scaleAnimation', scaleVal, SCALE);
+
+  // When the value of scaleVal changes to 2, this will grow
+  rect(0, 0, 50, 50);
+}
+
+function mouseClicked() {
+  // scaleVal become 2 on click
+  scaleVal = 2;
+}
+```
 
 ## License
 
