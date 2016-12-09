@@ -68,6 +68,26 @@
     return _animations;
   }
 
+  /**
+   * Checks whether any animations are running at the end of the draw loop. If
+   * they are, it keeps the loop running. If all animations are finished, it
+   * calls noLoop() to stop looping.
+   *
+   * @return {Boolean} True if looping, false if not
+   */
+  p5.prototype.loopControler = function() {
+    looping = false;
+
+    for (var = i 0; i < _animations.length; i++) {
+      if (_animations[i].active === true) {
+        looping = true;
+      }
+    }
+
+    looping === true ? loop() : noLoop();
+    return looping;
+  }
+
   // Animation type lazy function should go here
 
   //------------------------------------------------

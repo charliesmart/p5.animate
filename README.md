@@ -10,6 +10,23 @@ in simple syntax similar to basic p5.js.
 
 [Download un-minified](https://raw.githubusercontent.com/charliesmart/p5.animate/master/src/p5.animate.js)
 
+## Installation
+
+Download either the minified or un-minified version of p5.animate and add it to the index.html file of your p5 sketch using a script tag, after the tag for p5.js.
+
+```html
+<script type="text/javascript" src="/path/to/p5.js"></script>
+<script type="text/javascript" src="/path/to/p5.animate.min.js"></script>
+```
+
+## Using p5.animate
+
+
+
 ## License
 
-This library is open source under the MIT license. Please see LICENSE.md for more information.
+This library is free to use under the MIT license. Please see [LICENSE.md](https://github.com/charliesmart/p5.animate/blob/master/LICENSE.md) for more information.
+
+## Acknowledgments
+
+Easing functions based on [Robert Penner's](http://robertpenner.com/easing/) easing functions.
