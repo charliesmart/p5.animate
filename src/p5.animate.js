@@ -15,6 +15,8 @@ var NUMBER,
     FILL,
     STROKE;
 
+var OUT_BOUNCE;
+
 (function(p5) {
 
   'use strict';
@@ -45,6 +47,12 @@ var NUMBER,
     if(!(_animationExists(name))) {
       _newAnimation(name, val, type, config);
     }
+
+    // for (key in config) {
+    //   if (config.hasOwnProperty(key) && _animations[name][key] !== config[key]) {
+    //     _animations[name][key] = config[key];
+    //   }
+    // }
 
     var val = _runAnimation(name, val);
     return val;
@@ -131,7 +139,7 @@ var NUMBER,
     // Set config to an empty object if an argument is not passed
     config = config || {};
 
-    configKeys = Object.keys(config);
+    var configKeys = Object.keys(config);
 
     // Create the animation object
     var animationObject = {
@@ -402,5 +410,5 @@ var NUMBER,
   function IN_QUINT(t)     { return t * t * t * t * t }
   function OUT_QUINT(t)    { return 1 + (--t) * t * t * t * t }
   function IN_OUT_QUINT(t) { return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t }
-
+  OUT_BOUNCE = function(t) { return .04 * t / (--t) * Math.sin(25 * t) }
 })(p5);
