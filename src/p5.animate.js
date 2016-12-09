@@ -10,6 +10,7 @@ var NUMBER,
     TRANSLATE_X,
     TRANSLATE_Y,
     ROTATE,
+    SCALE,
     COLOR,
     FILL,
     STROKE;
@@ -130,6 +131,8 @@ var NUMBER,
     // Set config to an empty object if an argument is not passed
     config = config || {};
 
+    configKeys = Object.keys(config);
+
     // Create the animation object
     var animationObject = {
       type:          type || NUMBER,
@@ -147,7 +150,14 @@ var NUMBER,
       active:        false,
     };
 
-    // Add it to _animations
+    // Add any custom user configurations to the animation
+    for (var i = 0; i < configKeys.length; i++) {
+      if (!animationObject.hasOwnProperty(configKeys[i])) {
+        animationObject[configKeys[i]] = config[configKeys[i]];
+      }
+    }
+
+    // Add the animation to _animations
     _animations[name] = animationObject;
   }
 
